@@ -23,7 +23,7 @@ class MeshFactory
 	end
 
 	# 地球の生成
-	def self.create_earth
+	def self.create_saisen
 		geometry = Mittsu::BoxGeometry.new(1, 1, 1)
 		material = generate_material(
 			:basic,
