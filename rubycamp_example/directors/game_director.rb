@@ -90,8 +90,11 @@ module Directors
 
 			# 地球を作成し、カメラ位置（原点）に対して大気圏を飛行してるっぽく見える位置に移動させる
 			@earth = MeshFactory.create_earth
-			@earth.position.y = -0.9
-			@earth.position.z = -0.8
+#			@earth.position.y = -0.9
+#			@earth.position.z = -0.8
+			@earth.position.y = -0.8
+			@earth.position.z = -2.0
+
 			self.scene.add(@earth)
 		end
 
