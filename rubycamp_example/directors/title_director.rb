@@ -17,8 +17,8 @@ module Directors
     # １フレーム分の進行処理
     def play
       # 地球を斜め方向に回転させる
-      @earth.rotate_x(0.001)
-      @earth.rotate_y(0.001)
+      # @earth.rotate_x(0.001)
+      # @earth.rotate_y(0.001)
 
       # タイトル文字パネル群をそれぞれ１フレーム分進行させる
       @panels.each(&:play)
@@ -46,9 +46,9 @@ module Directors
       self.scene.add(@sun)
 
       # 背景用の地球を作成
-      @earth = MeshFactory.create_earth
-      @earth.position.z = -2
-      self.scene.add(@earth)
+      @saisen = MeshFactory.create_saisen
+      @saisen.position.z = -2
+      self.scene.add(@saisen)
 
       # タイトル文字パネルの初期表示位置（X座標）を定義
       start_x = -0.35
