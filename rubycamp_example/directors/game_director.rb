@@ -32,7 +32,7 @@ module Directors
 		# １フレーム分の進行処理
 		def play
 			# 地球を少しずつ回転させ、大気圏内を飛行してる雰囲気を醸し出す
-			@earth.rotate_x(0.002)
+			# @earth.rotate_x(0.002)
 
 			# 現在発射済みの弾丸を一通り動かす
 			@bullets.each(&:play)
