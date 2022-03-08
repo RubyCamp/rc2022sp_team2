@@ -82,7 +82,6 @@ module Directors
 			#binding.irb
 			# 原点方向を見つめる
 			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y,@saisen.position.z))
-
 		end
 
 		# キー押下（単発）時のハンドリング
