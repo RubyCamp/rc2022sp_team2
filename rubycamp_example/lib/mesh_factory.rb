@@ -2,8 +2,8 @@
 # ゲーム内に登場するメッシュを生産する役割を一手に引き受ける
 class MeshFactory
 	# 弾丸の生成
-	def self.create_bullet(r: 0.1, div_w: 16, div_h: 16, color: nil, map: nil, normal_map: nil)
-		geometry = Mittsu::SphereGeometry.new(r, div_w, div_h)
+	def self.create_bullet(r: 0.1, div_w: 0.05, div_h: 0.05, color: nil, map: nil, normal_map: nil)
+		geometry = Mittsu::CylinderGeometry.new(r, div_w, div_h)
 		material = generate_material(:basic, color, map, normal_map)
 		Mittsu::Mesh.new(geometry, material)
 	end
@@ -26,7 +26,7 @@ class MeshFactory
 	def self.create_earth
 		geometry = Mittsu::BoxGeometry.new(1, 1, 1)
 		material = generate_material(
-			:phong,
+			:basic,
 			nil,
 			TextureFactory.create_texture_map("saisen2.png"),
 			TextureFactory.create_normal_map("saisen2.png"))
