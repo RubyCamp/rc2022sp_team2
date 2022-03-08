@@ -28,8 +28,8 @@ class MeshFactory
 		material = generate_material(
 			:phong,
 			nil,
-			TextureFactory.create_texture_map("earth.png"),
-			TextureFactory.create_normal_map("earth_normal.png"))
+			TextureFactory.create_texture_map("saisen2.png"),
+			TextureFactory.create_normal_map("saisen2.png"))
 		Mittsu::Mesh.new(geometry, material)
 	end
 
