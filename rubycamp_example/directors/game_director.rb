@@ -22,6 +22,9 @@ module Directors
 			# 敵の詰め合わせ用配列
 			@enemies = []
 
+			#賽銭箱を生成
+			@saisen = MeshFactory.create_saisen
+
 			# 現在のフレーム数をカウントする
 			@frame_counter = 0
 
@@ -89,10 +92,10 @@ module Directors
 			self.scene.add(@sun)
 
 			# 地球を作成し、カメラ位置（原点）に対して大気圏を飛行してるっぽく見える位置に移動させる
-			@earth = MeshFactory.create_earth
-			@earth.position.y = -0.9
-			@earth.position.z = -0.8
-			self.scene.add(@earth)
+			@saisen = MeshFactory.create_saisen
+			@saisen.position.y = -0.9
+			@saisen.position.z = -0.8
+			self.scene.add(@saisen)
 		end
 
 		# 弾丸発射
@@ -120,6 +123,15 @@ module Directors
 					bullet.expired = true
 					enemy.expired = true
 				end
+			end
+
+			#賽銭箱のあたり判定と処理
+			return if bullet.expired
+
+			distance_saisen_bullet = bullet.position.distance_to(@saisen.position)
+			if distance_saisen_bullet < 0.05
+				puts "賽銭箱にあたったよ!!"
+				#当たった時の処理(点数加算とか)
 			end
 		end
 	end
