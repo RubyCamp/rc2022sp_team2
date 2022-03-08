@@ -24,12 +24,12 @@ class MeshFactory
 
 	# 地球の生成
 	def self.create_earth
-		geometry = Mittsu::SphereGeometry.new(1, 64, 64)
+		geometry = Mittsu::BoxGeometry.new(1, 1, 1)
 		material = generate_material(
 			:phong,
 			nil,
-			TextureFactory.create_texture_map("earth.png"),
-			TextureFactory.create_normal_map("earth_normal.png"))
+			TextureFactory.create_texture_map("saisen2.png"),
+			TextureFactory.create_normal_map("saisen2.png"))
 		Mittsu::Mesh.new(geometry, material)
 	end
 
