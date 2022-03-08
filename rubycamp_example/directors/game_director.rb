@@ -93,8 +93,8 @@ module Directors
 
 			# 地球を作成し、カメラ位置（原点）に対して大気圏を飛行してるっぽく見える位置に移動させる
 			@saisen = MeshFactory.create_saisen
-			@saisen.position.y = -0.9
-			@saisen.position.z = -0.8
+			@saisen.position.y = -0.8
+			@saisen.position.z = -2.0
 			self.scene.add(@saisen)
 		end
 

@@ -5,9 +5,18 @@ class Enemy
 	# 初期化
 	def initialize(x: nil, y: nil, z: nil)
 		# 初期位置指定が無ければランダムに配置する
-		x ||= rand(10) / 10.0 - 0.5
-		y ||= rand(10) / 10.0 + 1
-		z ||= rand(10) / 10.0 + 3
+#		x ||= rand(10) / 10.0 - 0.5
+#		y ||= rand(10) / 10.0 + 1
+#		z ||= rand(10) / 10.0 + 3
+#			@earth.position.y = -0.9
+#			@earth.position.z = -0.8
+
+		r = rand(2.0..2.1)
+		theta = rand(0..3.14)
+		x = r*Math.cos( theta ) 
+		y = -1.5
+		z = r*Math.sin( theta ) + 0.8
+
 		pos = Mittsu::Vector3.new(x, y, -z)
 		self.mesh = MeshFactory.create_enemy(r: 0.2, color: 0x00ff00)
 		self.mesh.position = pos
