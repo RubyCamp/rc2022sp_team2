@@ -9,8 +9,8 @@ class MeshFactory
 	end
 
 	# 敵キャラクタの生成
-	def self.create_enemy(r: 0.1, div_w: 16, div_h: 16, color: nil, map: nil, normal_map: nil)
-		geometry = Mittsu::SphereGeometry.new(r, div_w, div_h)
+	def self.create_enemy(r: 0.1, div_w: 0.2, div_h: 2, color: nil, map: nil, normal_map: nil)
+		geometry = Mittsu::CylinderGeometry.new(r, div_w, div_h)
 		material = generate_material(:basic, color, map, normal_map)
 		Mittsu::Mesh.new(geometry, material)
 	end
