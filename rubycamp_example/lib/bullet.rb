@@ -8,7 +8,7 @@ class Bullet
 	# 初期化
 	# 進行方向を表す単位ベクトルを受領する
 	def initialize(forward_vector)
-		self.mesh = MeshFactory.create_bullet(r: 0.02, color: 0xff0000)
+		self.mesh = MeshFactory.create_bullet(r: 0.05, color: 0xffff00)
 		@forward_vector = forward_vector
 		@forwarded_frame_count = 0 # 何フレーム分進行したかを記憶するカウンタ
 		self.expired = false
