@@ -15,6 +15,8 @@ module Directors
 
 			# ゲーム本編の登場オブジェクト群を生成
 			create_objects
+			@total_score = 0
+			@saisen_hit_count = 0
 
 			# 弾丸の詰め合わせ用配列
 			@bullets = []
@@ -68,7 +70,7 @@ module Directors
 
 			# 各弾丸について当たり判定実施
 			@bullets.each{|bullet| hit_any_enemies(bullet) }
-
+			@bullets.each{|bullet| hit_saisen_box(bullet) }
 			# 消滅済みの弾丸及び敵を配列とシーンから除去(わざと複雑っぽく記述しています)
 			rejected_bullets = []
 			@bullets.delete_if{|bullet| bullet.expired ? rejected_bullets << bullet : false }
@@ -86,7 +88,7 @@ module Directors
 
 			@frame_counter += 1
 			@camera_rot_y += 0.01 if self.renderer.window.key_down?(GLFW_KEY_UP)
-			@camera_rot_y -= 0.01 if self.renderer.window.key_down?(GLFW_KEY_DOWN)			
+			@camera_rot_y -= 0.01 if self.renderer.window.key_down?(GLFW_KEY_DOWN)
 			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y+@camera_rot_y,@saisen.position.z))
 
 		#	self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
@@ -149,27 +151,39 @@ module Directors
 		end
 
 		# 弾丸と敵の当たり判定
-		def hit_any_enemies(bullet)
-			return if bullet.expired
+		# 弾丸と敵の当たり判定
+    def hit_any_enemies(bullet)
+      return if bullet.expired
 
-			@enemies.each do |enemy|
-				next if enemy.expired
-				distance = bullet.position.distance_to(enemy.position)
-				if distance < 0.2
-					puts "Hit!"
-					bullet.expired = true
-					enemy.expired = true
-				end
-			end
+      @enemies.each do |enemy|
+        next if enemy.expired
+        distance = bullet.position.distance_to(enemy.position)
+        if distance < 0.2
+          puts "Hit!#{@total_score}"
+          bullet.expired = true
+          # enemy.expired = true
+					@total_score -= 5
 
-			#賽銭箱のあたり判定と処理
-			return if bullet.expired
+        end
+      end
+    end
 
-			distance_saisen_bullet = bullet.position.distance_to(@saisen.position)
-			if distance_saisen_bullet < 0.05
-				puts "賽銭箱にあたったよ!!"
-				#当たった時の処理(点数加算とか)
-			end
-		end
+    def hit_saisen_box(bullet)
+      return if bullet.expired
+
+      #賽銭箱のあたり判定と処理
+      return if bullet.expired
+
+      distance_saisen_bullet_x = (bullet.position.x - @saisen.position.x).abs
+      distance_saisen_bullet_y = (bullet.position.y - @saisen.position.y).abs
+			distance_saisen_bullet_z = (bullet.position.z - @saisen.position.z).abs
+      if distance_saisen_bullet_x < 0.5 && distance_saisen_bullet_y < 0.5 && distance_saisen_bullet_z < 0.5
+				@saisen_hit_count += 1
+				bullet.expired = true
+        puts("賽銭箱にあたったよ!!#{@saisen_hit_count.to_s}回目#{@total_score}")
+        #当たった時の処理(点数加算とか)
+				@total_score += 10
+      end
+    end
 	end
 end
