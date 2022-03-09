@@ -14,5 +14,5 @@ class Saisen
   end
 
   def play
-	end
+  end
 end
