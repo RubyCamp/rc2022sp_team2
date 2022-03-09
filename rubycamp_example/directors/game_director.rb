@@ -23,7 +23,7 @@ module Directors
 			@enemies = []
 
 			#賽銭箱を生成
-			#@saisen = MeshFactory.create_saisen
+			@saisen = MeshFactory.create_saisen
 
 			# 現在のフレーム数をカウントする
 			@frame_counter = 0
@@ -32,26 +32,6 @@ module Directors
 			@camera_rotate_y = 0.0
 
 			@rot = 0
-
-			cube_map_texture = Mittsu::ImageUtils.load_texture_cube(
- 				 [ 'rt', 'lf', 'up', 'dn', 'bk', 'ft' ].map { |path|
-    			"images/alpha-island_#{path}.png"
- 			 }
-			)
-
-			shader = Mittsu::ShaderLib[:cube]
-			shader.uniforms['tCube'].value = cube_map_texture
-
-			skybox_material = Mittsu::ShaderMaterial.new({
-  			fragment_shader: shader.fragment_shader,
-  			vertex_shader: shader.vertex_shader,
-  			uniforms: shader.uniforms,
-  			depth_write: false,
-  			side: Mittsu::BackSide
-			})
-
-			skybox = Mittsu::Mesh.new(Mittsu::BoxGeometry.new(100, 100, 100), skybox_material)
-			self.scene.add(skybox)
 		end
 
 		# １フレーム分の進行処理
@@ -89,15 +69,17 @@ module Directors
 			self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
 			self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
 			self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
-#			puts self.camera.position
+			puts self.camera.position
 
 			@rot += 0.5
 			#毎フレーム角度を0.5度ずつ足していく
+		
 			# ラジアンに変換する
 			radian = (@rot * Math::PI) / 180
 			# 角度に応じてカメラの位置を設定
-			self.camera.position.x = Math.sin(radian) + @saisen.position.x 
-			self.camera.position.z = Math.cos(radian) + @saisen.position.z
+			self.camera.position.x = Math.sin(radian) + @saisen.position.x + 0.5
+			self.camera.position.z = Math.cos(radian) - @saisen.position.z - 3
+			#binding.irb
 			# 原点方向を見つめる
 			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y,@saisen.position.z))
 		end
