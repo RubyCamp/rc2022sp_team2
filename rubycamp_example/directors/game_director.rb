@@ -142,7 +142,6 @@ module Directors
 			# 弾丸オブジェクト生成
 			bullet = Bullet.new(f)
 			self.scene.add(bullet.mesh)
-		    puts self.camera.position
 			bullet.position.x=self.camera.position.x
 			bullet.position.y=self.camera.position.y
 			bullet.position.z=self.camera.position.z
