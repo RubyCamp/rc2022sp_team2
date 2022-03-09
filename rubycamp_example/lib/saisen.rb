@@ -10,7 +10,11 @@ class Saisen
     self.mesh.position
   end
 
-  def resize
+  # メッシュをリサイズ
+  def resize(x,y,z)
+    self.mesh.scale.x = x
+    self.mesh.scale.y = y
+    self.mesh.scale.z = z
   end
 
   def play

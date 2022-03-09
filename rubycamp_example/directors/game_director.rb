@@ -128,10 +128,10 @@ module Directors
 			self.scene.add(@sun)
 
 			# 地球を作成し、カメラ位置（原点）に対して大気圏を飛行してるっぽく見える位置に移動させる
-			@saisen = MeshFactory.create_saisen
+			@saisen = Saisen.new
 			@saisen.position.y = -0.8
 			@saisen.position.z = -2.0
-			self.scene.add(@saisen)
+			self.scene.add(@saisen.mesh)
 		end
 
 		# 弾丸発射
