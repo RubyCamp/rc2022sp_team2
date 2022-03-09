@@ -96,14 +96,11 @@ module Directors
 			@rot -= 1 if self.renderer.window.key_down?(GLFW_KEY_LEFT)
 			@rot += 1 if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 
-			#@rot += 0.5
-			#毎フレーム角度を0.5度ずつ足していく
 			# ラジアンに変換する
 			radian = (@rot * Math::PI) / 180
 			# 角度に応じてカメラの位置を設定
 			self.camera.position.x = 2*Math.sin(radian) + @saisen.position.x
 			self.camera.position.z = 2*Math.cos(radian) + @saisen.position.z
-			# 原点方向を見つめる
 		end
 
 		# キー押下（単発）時のハンドリング
