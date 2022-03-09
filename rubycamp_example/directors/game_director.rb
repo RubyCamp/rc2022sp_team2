@@ -159,9 +159,11 @@ module Directors
         next if enemy.expired
         distance = bullet.position.distance_to(enemy.position)
         if distance < 0.2
-          puts "Hit!"
+          puts "Hit!#{@total_score}"
           bullet.expired = true
-          enemy.expired = true
+          # enemy.expired = true
+					@total_score -= 5
+
         end
       end
     end
@@ -178,8 +180,9 @@ module Directors
       if distance_saisen_bullet_x < 0.5 && distance_saisen_bullet_y < 0.5 && distance_saisen_bullet_z < 0.5
 				@saisen_hit_count += 1
 				bullet.expired = true
-        puts("賽銭箱にあたったよ!!#{@saisen_hit_count.to_s}回目")
+        puts("賽銭箱にあたったよ!!#{@saisen_hit_count.to_s}回目#{@total_score}")
         #当たった時の処理(点数加算とか)
+				@total_score += 10
       end
     end
   end
