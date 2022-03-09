@@ -15,6 +15,8 @@ module Directors
 
 			# ゲーム本編の登場オブジェクト群を生成
 			create_objects
+			@total_score = 0
+			@saisen_hit_count = 0
 
 			# 弾丸の詰め合わせ用配列
 			@bullets = []
@@ -32,6 +34,27 @@ module Directors
 			@camera_rotate_y = 0.0
 
 			@rot = 0
+			@camera_rot_y=0
+
+			cube_map_texture = Mittsu::ImageUtils.load_texture_cube(
+ 				 [ 'rt', 'lf', 'up', 'dn', 'bk', 'ft' ].map { |path|
+    			"images/alpha-island_#{path}.png"
+ 			 }
+			)
+
+			shader = Mittsu::ShaderLib[:cube]
+			shader.uniforms['tCube'].value = cube_map_texture
+
+			skybox_material = Mittsu::ShaderMaterial.new({
+  			fragment_shader: shader.fragment_shader,
+  			vertex_shader: shader.vertex_shader,
+  			uniforms: shader.uniforms,
+  			depth_write: false,
+  			side: Mittsu::BackSide
+			})
+
+			skybox = Mittsu::Mesh.new(Mittsu::BoxGeometry.new(100, 100, 100), skybox_material)
+			self.scene.add(skybox)
 		end
 
 		# １フレーム分の進行処理
@@ -47,7 +70,7 @@ module Directors
 
 			# 各弾丸について当たり判定実施
 			@bullets.each{|bullet| hit_any_enemies(bullet) }
-
+			@bullets.each{|bullet| hit_saisen_box(bullet) }
 			# 消滅済みの弾丸及び敵を配列とシーンから除去(わざと複雑っぽく記述しています)
 			rejected_bullets = []
 			@bullets.delete_if{|bullet| bullet.expired ? rejected_bullets << bullet : false }
@@ -64,24 +87,22 @@ module Directors
 			end
 
 			@frame_counter += 1
+			@camera_rot_y += 0.01 if self.renderer.window.key_down?(GLFW_KEY_UP)
+			@camera_rot_y -= 0.01 if self.renderer.window.key_down?(GLFW_KEY_DOWN)
+			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y+@camera_rot_y,@saisen.position.z))
 
-			self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
-			self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
-			self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
-			self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
-			puts self.camera.position
+		#	self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
+		#	self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
+		#	self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
+		#	self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
+			@rot -= 1 if self.renderer.window.key_down?(GLFW_KEY_LEFT)
+			@rot += 1 if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 
-			@rot += 0.5
-			#毎フレーム角度を0.5度ずつ足していく
-		
 			# ラジアンに変換する
 			radian = (@rot * Math::PI) / 180
 			# 角度に応じてカメラの位置を設定
-			self.camera.position.x = Math.sin(radian) + @saisen.position.x + 0.5
-			self.camera.position.z = Math.cos(radian) - @saisen.position.z - 3
-			#binding.irb
-			# 原点方向を見つめる
-			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y,@saisen.position.z))
+			self.camera.position.x = 2*Math.sin(radian) + @saisen.position.x
+			self.camera.position.z = 2*Math.cos(radian) + @saisen.position.z
 		end
 
 		# キー押下（単発）時のハンドリング
@@ -123,31 +144,46 @@ module Directors
 			# 弾丸オブジェクト生成
 			bullet = Bullet.new(f)
 			self.scene.add(bullet.mesh)
+			bullet.position.x=self.camera.position.x
+			bullet.position.y=self.camera.position.y
+			bullet.position.z=self.camera.position.z
 			@bullets << bullet
 		end
 
 		# 弾丸と敵の当たり判定
-		def hit_any_enemies(bullet)
-			return if bullet.expired
+		# 弾丸と敵の当たり判定
+    def hit_any_enemies(bullet)
+      return if bullet.expired
 
-			@enemies.each do |enemy|
-				next if enemy.expired
-				distance = bullet.position.distance_to(enemy.position)
-				if distance < 0.2
-					puts "Hit!"
-					bullet.expired = true
-					enemy.expired = true
-				end
-			end
+      @enemies.each do |enemy|
+        next if enemy.expired
+        distance = bullet.position.distance_to(enemy.position)
+        if distance < 0.2
+          puts "Hit!#{@total_score}"
+          bullet.expired = true
+          # enemy.expired = true
+					@total_score -= 5
 
-			#賽銭箱のあたり判定と処理
-			return if bullet.expired
+        end
+      end
+    end
 
-			distance_saisen_bullet = bullet.position.distance_to(@saisen.position)
-			if distance_saisen_bullet < 0.05
-				puts "賽銭箱にあたったよ!!"
-				#当たった時の処理(点数加算とか)
-			end
-		end
+    def hit_saisen_box(bullet)
+      return if bullet.expired
+
+      #賽銭箱のあたり判定と処理
+      return if bullet.expired
+
+      distance_saisen_bullet_x = (bullet.position.x - @saisen.position.x).abs
+      distance_saisen_bullet_y = (bullet.position.y - @saisen.position.y).abs
+			distance_saisen_bullet_z = (bullet.position.z - @saisen.position.z).abs
+      if distance_saisen_bullet_x < 0.5 && distance_saisen_bullet_y < 0.5 && distance_saisen_bullet_z < 0.5
+				@saisen_hit_count += 1
+				bullet.expired = true
+        puts("賽銭箱にあたったよ!!#{@saisen_hit_count.to_s}回目#{@total_score}")
+        #当たった時の処理(点数加算とか)
+				@total_score += 10
+      end
+    end
 	end
 end
