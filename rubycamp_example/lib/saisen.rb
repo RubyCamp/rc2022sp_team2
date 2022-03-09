@@ -10,6 +10,9 @@ class Saisen
     self.mesh.position
   end
 
+  def resize
+  end
+
   def play
 	end
 end
