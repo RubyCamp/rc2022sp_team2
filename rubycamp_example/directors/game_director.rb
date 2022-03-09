@@ -32,6 +32,26 @@ module Directors
 			@camera_rotate_y = 0.0
 
 			@rot = 0
+
+			cube_map_texture = Mittsu::ImageUtils.load_texture_cube(
+ 				 [ 'rt', 'lf', 'up', 'dn', 'bk', 'ft' ].map { |path|
+    			"images/alpha-island_#{path}.png"
+ 			 }
+			)
+
+			shader = Mittsu::ShaderLib[:cube]
+			shader.uniforms['tCube'].value = cube_map_texture
+
+			skybox_material = Mittsu::ShaderMaterial.new({
+  			fragment_shader: shader.fragment_shader,
+  			vertex_shader: shader.vertex_shader,
+  			uniforms: shader.uniforms,
+  			depth_write: false,
+  			side: Mittsu::BackSide
+			})
+
+			skybox = Mittsu::Mesh.new(Mittsu::BoxGeometry.new(100, 100, 100), skybox_material)
+			self.scene.add(skybox)
 		end
 
 		# １フレーム分の進行処理
