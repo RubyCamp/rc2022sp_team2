@@ -24,9 +24,6 @@ module Directors
 			# 敵の詰め合わせ用配列
 			@enemies = []
 
-			#賽銭箱を生成
-			@saisen = MeshFactory.create_saisen
-
 			# 現在のフレーム数をカウントする
 			@frame_counter = 0
 
