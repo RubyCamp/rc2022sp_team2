@@ -32,6 +32,7 @@ module Directors
 			@camera_rotate_y = 0.0
 
 			@rot = 0
+			@camera_rot_y=0
 
 			cube_map_texture = Mittsu::ImageUtils.load_texture_cube(
  				 [ 'rt', 'lf', 'up', 'dn', 'bk', 'ft' ].map { |path|
@@ -84,12 +85,14 @@ module Directors
 			end
 
 			@frame_counter += 1
-			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y+1,@saisen.position.z))
+			@camera_rot_y += 0.01 if self.renderer.window.key_down?(GLFW_KEY_UP)
+			@camera_rot_y -= 0.01 if self.renderer.window.key_down?(GLFW_KEY_DOWN)			
+			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y+@camera_rot_y,@saisen.position.z))
 
-			self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
-			self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
-#			self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
-#			self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
+		#	self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
+		#	self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
+		#	self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
+		#	self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 			@rot -= 1 if self.renderer.window.key_down?(GLFW_KEY_LEFT)
 			@rot += 1 if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 
