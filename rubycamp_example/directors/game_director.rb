@@ -25,7 +25,7 @@ module Directors
 			@enemies = []
 
 			#賽銭箱を生成
-			@saisen = MeshFactory.create_saisen
+			# @saisen = MeshFactory.create_saisen
 
 			# 現在のフレーム数をカウントする
 			@frame_counter = 0
