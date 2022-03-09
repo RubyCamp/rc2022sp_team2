@@ -46,9 +46,9 @@ module Directors
       self.scene.add(@sun)
 
       # 背景用の地球を作成
-      @saisen = MeshFactory.create_saisen
+      @saisen = Saisen.new
       @saisen.position.z = -2
-      self.scene.add(@saisen)
+      self.scene.add(@saisen.mesh)
 
       # タイトル文字パネルの初期表示位置（X座標）を定義
       start_x = -0.35
