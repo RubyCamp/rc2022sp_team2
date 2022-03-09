@@ -84,22 +84,23 @@ module Directors
 			end
 
 			@frame_counter += 1
+			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y+1,@saisen.position.z))
 
 			self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
 			self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
-			self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
-			self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
-#			puts self.camera.position
+#			self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
+#			self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
+			@rot -= 1 if self.renderer.window.key_down?(GLFW_KEY_LEFT)
+			@rot += 1 if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 
-			@rot += 0.5
+			#@rot += 0.5
 			#毎フレーム角度を0.5度ずつ足していく
 			# ラジアンに変換する
 			radian = (@rot * Math::PI) / 180
 			# 角度に応じてカメラの位置を設定
-			self.camera.position.x = Math.sin(radian) + @saisen.position.x 
-			self.camera.position.z = Math.cos(radian) + @saisen.position.z
+			self.camera.position.x = 2*Math.sin(radian) + @saisen.position.x
+			self.camera.position.z = 2*Math.cos(radian) + @saisen.position.z
 			# 原点方向を見つめる
-			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y,@saisen.position.z))
 		end
 
 		# キー押下（単発）時のハンドリング
@@ -141,6 +142,10 @@ module Directors
 			# 弾丸オブジェクト生成
 			bullet = Bullet.new(f)
 			self.scene.add(bullet.mesh)
+		    puts self.camera.position
+			bullet.position.x=self.camera.position.x
+			bullet.position.y=self.camera.position.y
+			bullet.position.z=self.camera.position.z
 			@bullets << bullet
 		end
 
