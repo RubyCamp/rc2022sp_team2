@@ -8,12 +8,21 @@ class MeshFactory
 		Mittsu::Mesh.new(geometry, material)
 	end
 
-	# 敵キャラクタの生成
-	def self.create_enemy(r: 0.1, div_w: 0.2, div_h: 2, color: nil, map: nil, normal_map: nil)
-		geometry = Mittsu::CylinderGeometry.new(r, div_w, div_h)
-		material = generate_material(:basic, color, map, normal_map)
-		Mittsu::Mesh.new(geometry, material)
-	end
+		# 敵キャラクタの生成
+		def self.create_enemy(radius_top: 0.1, radius_bottom: 0.2, div_h: 1.0, color: nil, map: nil, normal_map: nil)
+			# 胴体の作成
+			body_geometry = Mittsu::CylinderGeometry.new(radius_top, radius_bottom, div_h)
+			material = generate_material(:basic, color, map, normal_map)
+			mesh_body = Mittsu::Mesh.new(body_geometry, material)
+			# 頭の作成
+			head_geometry = Mittsu::SphereGeometry.new(radius_bottom)
+			mesh_head = Mittsu::Mesh.new(head_geometry, material)
+	
+			mesh_head.position.y += 0.5
+			
+			mesh_body.add(mesh_head)
+	
+		end
 
 	# 平面パネルの生成
 	def self.create_panel(width: 1, height: 1, color: nil, map: nil)
