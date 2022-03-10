@@ -57,7 +57,7 @@ module Directors
       start_x = -0.35
 
       # RubyCampの8文字を、1文字1アニメーションパネルとして作成し、表示開始タイミングを微妙にずらす
-      %w(神 っ ぽ い 投 げ 銭).each_with_index do |char, idx|
+      %w(神 っ ポ イ 投 げ 銭).each_with_index do |char, idx|
         create_title_logo(char, start_x + (idx * 0.1), idx * 2)
       end
 
