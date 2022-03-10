@@ -84,7 +84,7 @@ module Directors
 				x = rand(self.camera.position.x..@saisen.position.x)
 				y = rand(self.camera.position.y..@saisen.position.y)
 				z = rand(self.camera.position.z..@saisen.position.z)
-				enemy = Enemy.new(x: x, y: y, z: z)
+				enemy = Enemy.new(x: x, y: y, z: z, saisen_position: @saisen.position)
 				@enemies << enemy
 				self.scene.add(enemy.mesh)
 			end
@@ -100,8 +100,8 @@ module Directors
 			# ラジアンに変換する
 			radian = (@rot * Math::PI) / 180
 			# 角度に応じてカメラの位置を設定
-			self.camera.position.x = 2*Math.sin(radian) + @saisen.position.x
-			self.camera.position.z = 2*Math.cos(radian) + @saisen.position.z
+			self.camera.position.x = 3*Math.sin(radian) + @saisen.position.x
+			self.camera.position.z = 3*Math.cos(radian) + @saisen.position.z
 		end
 
 		# キー押下（単発）時のハンドリング
