@@ -26,6 +26,11 @@ class TextureFactory
 	def self.create_title_description
 		Mittsu::ImageUtils.load_texture("images/title_description.png")
 	end
+	#タイトル画面の背景用テクスチャを生成
+	def self.create_title_background
+		Mittsu::ImageUtils.load_texture("images/kami2.png")
+	end
+
 
 	# エンディング画面の説明用文字列テクスチャを生成
 	def self.create_ending_description
