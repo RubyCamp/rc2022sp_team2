@@ -80,11 +80,11 @@ module Directors
 			rejected_enemies.each{|enemy| self.scene.remove(enemy.mesh) }
 
 			# 一定のフレーム数経過毎に敵キャラを出現させる
-			if @frame_counter % 180 == 0
+			if @frame_counter % 180 == 0 && @enemies.length < 7
 				x = rand(self.camera.position.x..@saisen.position.x)
 				y = rand(self.camera.position.y..@saisen.position.y)
 				z = rand(self.camera.position.z..@saisen.position.z)
-				enemy = Enemy.new(x: x, y: y, z: z, saisen_position: @saisen.position)
+				enemy = Enemy.new(x: x, y: y, z: z, saisen_position: @saisen.position, frame_counter: @frame_counter)
 				@enemies << enemy
 				self.scene.add(enemy.mesh)
 			end
