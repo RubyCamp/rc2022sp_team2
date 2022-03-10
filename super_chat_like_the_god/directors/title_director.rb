@@ -25,6 +25,8 @@ module Directors
 
       # 説明用文字パネルを１フレーム分進行させる
       @description.play
+      #　タイトル画面パネルを１フレーム進行させる
+      @background.play
     end
 
     # キー押下（単発）時のハンドリング
@@ -64,10 +66,15 @@ module Directors
       # 説明文字列用のパネル作成
       # タイトル画面表示開始から180フレーム経過で表示するように調整
       # 位置は適当に決め打ち
-      @description = Panel.new(width: 1, height: 0.25, start_frame: 180, map: TextureFactory.create_title_description)
+      @description = Panel.new(width: 0.5, height: 0.12, start_frame: 180, map: TextureFactory.create_title_description)
       @description.mesh.position.y = -0.2
       @description.mesh.position.z = -0.5
       self.scene.add(@description.mesh)
+      # タイトル画面の背景パネルを作成
+      @background = Panel.new(width: 2.4, height: 1.8,start_frame: 0, map: TextureFactory.create_title_background)
+      @background.mesh.position.y = 0
+      @background.mesh.position.z = -1
+      self.scene.add(@background.mesh)
     end
 
     # タイトルロゴ用アニメーションパネル作成
@@ -75,6 +82,7 @@ module Directors
     def create_title_logo(char, x_pos, delay_frames)
       panel = AnimatedPanel.new(start_frame: 30 + delay_frames, duration: 120, map: TextureFactory.create_string(char))
       panel.mesh.position.x = x_pos
+      panel.mesh.position.y = 0.2
       panel.mesh.position.z = -0.5
       self.scene.add(panel.mesh)
       @panels ||= []
