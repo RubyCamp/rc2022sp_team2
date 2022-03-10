@@ -124,6 +124,16 @@ module Directors
 			@sun = LightFactory.create_sun_light
 			self.scene.add(@sun)
 
+			geometry = Mittsu::PlaneGeometry.new(1, 1)
+			material = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string("神"))
+			panel = Mittsu::Mesh.new(geometry, material)
+			panel.position.z = -0.3
+			panel.scale.x = 0.1
+			panel.scale.y = 0.1
+			panel.scale.z = 0.1
+			self.camera.add(panel)
+			self.scene.add(self.camera)
+
 			# 地球を作成し、カメラ位置（原点）に対して大気圏を飛行してるっぽく見える位置に移動させる
 			@saisen = Saisen.new
 			@saisen.position.y = -0.8
