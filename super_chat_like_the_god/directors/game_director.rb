@@ -77,7 +77,7 @@ module Directors
 			rejected_enemies.each{|enemy| self.scene.remove(enemy.mesh) }
 
 			# 一定のフレーム数経過毎に敵キャラを出現させる
-			if @frame_counter % 180 == 0 && @enemies.length < 15
+			if @frame_counter % 191 == 0 && @enemies.length < 15
 				x = rand(self.camera.position.x..@saisen.position.x)
 				y = rand(self.camera.position.y..@saisen.position.y)
 				z = rand(self.camera.position.z..@saisen.position.z)
@@ -159,7 +159,10 @@ module Directors
       @enemies.each do |enemy|
         next if enemy.expired
         distance = bullet.position.distance_to(enemy.position)
-        if distance < 0.2
+		distance_saisen_bullet_x = (bullet.position.x - enemy.position.x).abs
+		distance_saisen_bullet_y = (bullet.position.y - enemy.position.y).abs
+		distance_saisen_bullet_z = (bullet.position.z - enemy.position.z).abs
+        if distance_saisen_bullet_x < 0.2 && distance_saisen_bullet_y < 0.5 && distance_saisen_bullet_z < 0.2
           puts "Hit!#{@total_score}"
           bullet.expired = true
           # enemy.expired = true
