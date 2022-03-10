@@ -35,61 +35,15 @@ class Enemy
 		@radian += 0.01
 		@num += 0.001
 
+		self.mesh.position.x = @num*Math.sin(@radian) + @saisen_position.x
+		self.mesh.position.z = @num*Math.cos(@radian) + @saisen_position.z
+
 		if @num > 2.5
 			@num = 1.5
 			self.mesh.position.x = @num*Math.sin(@radian) + @saisen_position.x + rand
 			self.mesh.position.z = @num*Math.cos(@radian) + @saisen_position.z + rand
 		end
-
-		self.mesh.position.x = @num*Math.sin(@radian) + @saisen_position.x
-		self.mesh.position.z = @num*Math.cos(@radian) + @saisen_position.z
 		
-		# dx = rand(3)
-		# dz = rand(3)
-		# case dx
-		# when 1
-		# 	self.mesh.position.x = @num*Math.sin(@radian) + @saisen_position.x + rand
-		# when 2
-		# 	self.mesh.position.x = 1.5*Math.sin(@radian) + @saisen_position.x - rand
-		# end
-
-		# case dz
-		# when 1
-		# 	self.mesh.position.z = 1.5*Math.cos(@radian) + @saisen_position.z + rand
-		# when 2
-		# 	self.mesh.position.z = 1.5*Math.cos(@radian) + @saisen_position.z - rand
-		# end
-
-		# if self.mesh.position.x >= 3.0 || self.mesh.position.x <= -3.0
-		# 	self.mesh.position.x = rand(self.camera.position.x..@saisen.position.x)
-		# end
-		
-		# if self.mesh.position.z >= 1.0 || self.mesh.position.z <= -5.0
-		# 	self.mesh.position.z = rand(self.camera.position.z..@saisen.position.z)
-		# end
-		# if frame_counter % 190 == 0
-
-		# if @frame_counter % 180 < 100
-		# 	self.mesh.position.x -= 0.01
-		# 	self.mesh.position.z -= 0.01
-		# end
-
-		# if @frame_counter % 180 == 0
-		# 	puts self.mesh.position
-		# end
-		# else
-		# 	self.mesh.position.x = @camera_position_x - self.mesh.position.x
-		# 	self.mesh.position.z = @camera_position_z - self.mesh.position.z
-		# end
-
 	end
-
-	# def coordinate_x
-	# 	return @saisen_position.x
-	# end
-
-	# def coordinate_z
-	# 	return @saisen_position.z
-	# end
 
 end
