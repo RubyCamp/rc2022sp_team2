@@ -124,6 +124,20 @@ module Directors
 			@sun = LightFactory.create_sun_light
 			self.scene.add(@sun)
 
+			@panel = MeshFactory.create_panel
+			@panel.position.z = -0.3
+			@panel.position.x = -0.3
+			@panel.position.y = 0.2
+			@panel.scale.x = 0.2
+			@panel.scale.y = 0.2
+			@panel.scale.z = 0.2
+			self.camera.add(@panel)
+			self.scene.add(self.camera)
+			# panel = AnimatedPanel.new(start_frame: 30, duration: 120, map: TextureFactory.create_string("神"))
+      # panel.mesh.position.x = self.camera.position.x -0.25
+      # panel.mesh.position.z = self.camera.position.z -0.5
+      # self.scene.add(panel.mesh)
+
 			# 地球を作成し、カメラ位置（原点）に対して大気圏を飛行してるっぽく見える位置に移動させる
 			@saisen = Saisen.new
 			@saisen.position.y = -0.8
