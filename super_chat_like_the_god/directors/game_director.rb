@@ -89,12 +89,8 @@ module Directors
 			@frame_counter += 1
 			@camera_rot_y += 0.01 if self.renderer.window.key_down?(GLFW_KEY_UP)
 			@camera_rot_y -= 0.01 if self.renderer.window.key_down?(GLFW_KEY_DOWN)
-			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y+@camera_rot_y,@saisen.position.z))
+			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x, @saisen.position.y+@camera_rot_y, @saisen.position.z))
 
-		#	self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
-		#	self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
-		#	self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
-		#	self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 			@rot -= 1 if self.renderer.window.key_down?(GLFW_KEY_LEFT)
 			@rot += 1 if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 
@@ -103,7 +99,6 @@ module Directors
 			# 角度に応じてカメラの位置を設定
 			self.camera.position.x = 3*Math.sin(radian) + @saisen.position.x
 			self.camera.position.z = 3*Math.cos(radian) + @saisen.position.z
-			
 		end
 
 		# キー押下（単発）時のハンドリング
@@ -127,6 +122,53 @@ module Directors
 			# 太陽光をセット
 			@sun = LightFactory.create_sun_light
 			self.scene.add(@sun)
+			# 3.times do |i|
+			# 	eval("geometry#{i+1} = Mittsu::PlaneGeometry.new(1, 1)")
+			# 	eval("material#{i+1} = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string('0'))")
+			# 	eval("@panel#{i+1} = Mittsu::Mesh.new(geometry#{i+1}, material#{i+1})")
+			# 	eval("@panel#{i+1}.position.z = -0.3")
+			# 	eval("@panel#{i+1}.position.x = 0.1*(#{i+1})")
+			# 	eval("@panel#{i+1}.scale.x = 0.1")
+			# 	eval("@panel#{i+1}.scale.y = 0.1")
+			# 	eval("@panel#{i+1}.scale.z = 0.1")
+			# 	# eval("self.camera.add(@panel#{i+1})")
+			# end
+			geometry1 = Mittsu::PlaneGeometry.new(1, 1)
+			material1 = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string('0'))
+			@panel1 = Mittsu::Mesh.new(geometry1, material1)
+			@panel1.position.z = -0.3
+			@panel1.position.x = 0.1*1
+			@panel1.scale.x = 0.1
+			@panel1.scale.y = 0.1
+			@panel1.scale.z = 0.1
+
+			geometry2 = Mittsu::PlaneGeometry.new(1, 1)
+			material2 = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string('0'))
+			@panel2 = Mittsu::Mesh.new(geometry2, material2)
+			@panel2.position.z = -0.3
+			@panel2.position.x = 0.1*2
+			@panel2.scale.x = 0.1
+			@panel2.scale.y = 0.1
+			@panel2.scale.z = 0.1
+
+			geometry3 = Mittsu::PlaneGeometry.new(1, 1)
+			material3 = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string('0'))
+			@panel3 = Mittsu::Mesh.new(geometry3, material3)
+			@panel3.position.z = -0.3
+			@panel3.position.x = 0.1*3
+			@panel3.scale.x = 0.1
+			@panel3.scale.y = 0.1
+			@panel3.scale.z = 0.1
+
+			self.camera.add(@panel1)
+			self.camera.add(@panel2)
+			self.camera.add(@panel3)
+			self.scene.add(self.camera)
+			# @panel.material.map = TextureFactory.create_string("1")
+			10.times do |i|
+			   eval("@char#{i} = TextureFactory.create_string(#{i}.to_s)")
+			end
+			# binding.irb
 
 			# 地球を作成し、カメラ位置（原点）に対して大気圏を飛行してるっぽく見える位置に移動させる
 			@saisen = Saisen.new
@@ -167,7 +209,23 @@ module Directors
           bullet.expired = true
           # enemy.expired = true
 					@total_score -= 5
+					score_string_arr = @total_score.to_s.split(//)
 
+					if(score_string_arr.length == 1)
+						score_string_arr = ["0","0",score_string_arr[0].to_s]
+					end
+
+					if(score_string_arr.length == 2)
+						score_string_arr = ["0",score_string_arr[0].to_s,score_string_arr[1].to_s]
+					end
+
+					eval("@panel1.material.map = @char#{score_string_arr[0].to_i}")
+					eval("@panel2.material.map = @char#{score_string_arr[1].to_i}")
+					eval("@panel3.material.map = @char#{score_string_arr[2].to_i}")
+					self.camera.add(@panel1)
+					self.camera.add(@panel2)
+					self.camera.add(@panel3)
+					self.scene.add(self.camera)
         end
       end
     end
@@ -187,6 +245,23 @@ module Directors
         puts("賽銭箱にあたったよ!!#{@saisen_hit_count.to_s}回目#{@total_score}")
         #当たった時の処理(点数加算とか)
 				@total_score += 10
+				score_string_arr = @total_score.to_s.split(//)
+
+				if(score_string_arr.length == 1)
+					score_string_arr = ["0","0",score_string_arr[0].to_s]
+				end
+
+				if(score_string_arr.length == 2)
+					score_string_arr = ["0",score_string_arr[0].to_s,score_string_arr[1].to_s]
+				end
+
+				eval("@panel1.material.map = @char#{score_string_arr[0].to_i}")
+				eval("@panel2.material.map = @char#{score_string_arr[1].to_i}")
+				eval("@panel3.material.map = @char#{score_string_arr[2].to_i}")
+				self.camera.add(@panel1)
+				self.camera.add(@panel2)
+				self.camera.add(@panel3)
+				self.scene.add(self.camera)
       end
     end
 	end
