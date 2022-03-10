@@ -137,7 +137,8 @@ module Directors
 			material1 = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string('0'))
 			@panel1 = Mittsu::Mesh.new(geometry1, material1)
 			@panel1.position.z = -0.3
-			@panel1.position.x = 0.1*1
+			@panel1.position.x = -0.26
+			@panel1.position.y = 0.18
 			@panel1.scale.x = 0.1
 			@panel1.scale.y = 0.1
 			@panel1.scale.z = 0.1
@@ -146,7 +147,8 @@ module Directors
 			material2 = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string('0'))
 			@panel2 = Mittsu::Mesh.new(geometry2, material2)
 			@panel2.position.z = -0.3
-			@panel2.position.x = 0.1*2
+			@panel2.position.x = -0.26+0.1*1
+			@panel2.position.y = 0.18
 			@panel2.scale.x = 0.1
 			@panel2.scale.y = 0.1
 			@panel2.scale.z = 0.1
@@ -155,7 +157,8 @@ module Directors
 			material3 = Mittsu::MeshBasicMaterial.new(map: TextureFactory.create_string('0'))
 			@panel3 = Mittsu::Mesh.new(geometry3, material3)
 			@panel3.position.z = -0.3
-			@panel3.position.x = 0.1*3
+			@panel3.position.x = -0.26+0.1*2
+			@panel3.position.y = 0.18
 			@panel3.scale.x = 0.1
 			@panel3.scale.y = 0.1
 			@panel3.scale.z = 0.1
