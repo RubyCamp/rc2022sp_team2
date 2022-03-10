@@ -81,7 +81,10 @@ module Directors
 
 			# 一定のフレーム数経過毎に敵キャラを出現させる
 			if @frame_counter % 180 == 0
-				enemy = Enemy.new
+				x = rand(self.camera.position.x..@saisen.position.x)
+				y = rand(self.camera.position.y..@saisen.position.y)
+				z = rand(self.camera.position.z..@saisen.position.z)
+				enemy = Enemy.new(x: x, y: y, z: z)
 				@enemies << enemy
 				self.scene.add(enemy.mesh)
 			end
@@ -91,10 +94,6 @@ module Directors
 			@camera_rot_y -= 0.01 if self.renderer.window.key_down?(GLFW_KEY_DOWN)
 			self.camera.look_at(Mittsu::Vector3.new(@saisen.position.x,@saisen.position.y+@camera_rot_y,@saisen.position.z))
 
-		#	self.camera.rotate_x(CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_UP)
-		#	self.camera.rotate_x(-CAMERA_ROTATE_SPEED_X) if self.renderer.window.key_down?(GLFW_KEY_DOWN)
-		#	self.camera.rotate_y(CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_LEFT)
-		#	self.camera.rotate_y(-CAMERA_ROTATE_SPEED_Y) if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 			@rot -= 1 if self.renderer.window.key_down?(GLFW_KEY_LEFT)
 			@rot += 1 if self.renderer.window.key_down?(GLFW_KEY_RIGHT)
 
