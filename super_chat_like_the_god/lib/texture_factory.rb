@@ -28,7 +28,7 @@ class TextureFactory
 	end
 	#タイトル画面の背景用テクスチャを生成
 	def self.create_title_background
-		Mittsu::ImageUtils.load_texture("images/kami2.png")
+		Mittsu::ImageUtils.load_texture("images/replace.png")
 	end
 
 
